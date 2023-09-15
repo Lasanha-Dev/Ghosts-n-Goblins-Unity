@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4786613d3871aa64883eb545c0ffb5ac, type: 3}
+  m_Name: PlayerMovementState
+  m_EditorClassIdentifier: 
+  _stateTransitions:
+  - <TransitionState>k__BackingField: {fileID: 11400000, guid: f2c1f396b444f6246b527ac8821020b3, type: 2}
+    <TransitionConditions>k__BackingField:
+    - {fileID: 11400000, guid: 3271c552181fcc14ea166e0df416faa1, type: 2}
+    AllConditionsNeedsToMatch: 0
+  - <TransitionState>k__BackingField: {fileID: 11400000, guid: 9f15142984df01840ad399f61ee32f72, type: 2}
+    <TransitionConditions>k__BackingField:
+    - {fileID: 11400000, guid: e0235dfc520af1e43a3a0ffcd66a84cb, type: 2}
+    - {fileID: 11400000, guid: 4608990bc25783e41b22f5b7ac514c74, type: 2}
+    AllConditionsNeedsToMatch: 1
