@@ -23,7 +23,7 @@ namespace Game.StateMachine.Player
 
         public override void OnFixedUpdate()
         {
-            _playerRigidbody.velocity = _playerInputsController.PlayerMovementInputValue * Time.fixedDeltaTime * _playerStateMachineParameters.MovementSpeed * Vector2.right;
+            _playerRigidbody.velocity = new Vector2(_playerInputsController.MovementInput.InputValue * _playerStateMachineParameters.MovementSpeed * Time.fixedDeltaTime, _playerRigidbody.velocity.y);
         }
 
         protected override void SetupState(EntitieComponentsReferences playerComponentsReferences)

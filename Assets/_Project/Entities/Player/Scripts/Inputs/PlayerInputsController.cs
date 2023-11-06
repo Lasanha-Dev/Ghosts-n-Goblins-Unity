@@ -1,19 +1,33 @@
 using UnityEngine;
 
-using UnityEngine.InputSystem;
-
 namespace Game.Entities.Player
 {
-    [RequireComponent(typeof(PlayerInput))]
     public class PlayerInputsController : MonoBehaviour
     {
-        [field: SerializeField] public InputActionReference PlayerJumpAction { get; private set; }
+        private PlayerInputActions _playerInputActions;
 
-        public float PlayerMovementInputValue { get; private set; }
+        public InputDefinition JumpInput { get; private set; }
 
-        private void OnMovement(InputValue context)
+        public InputDefinition<float> MovementInput { get; private set; }
+
+        public InputDefinition<float> LadderInput { get; private set; }
+
+        private void Awake()
         {
-            PlayerMovementInputValue = context.Get<float>();
+            _playerInputActions = new PlayerInputActions();
+
+            _playerInputActions.Enable();
+
+            InitializePlayerInputs();
+        }
+
+        private void InitializePlayerInputs()
+        {
+            JumpInput = new InputDefinition(_playerInputActions.Player.Jump);
+
+            MovementInput = new InputDefinition<float>(_playerInputActions.Player.Movement);
+
+            LadderInput = new InputDefinition<float>(_playerInputActions.Player.Ladder);
         }
     }
 }

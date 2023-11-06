@@ -24,12 +24,12 @@ namespace Game.Entities.Player
 
         private Quaternion GetTargetRotation()
         {
-            if (_playerInputsController.PlayerMovementInputValue > 0)
+            if (_playerInputsController.MovementInput.InputValue > 0)
             {
                 return _targetRotation = _rightSideRotation;
             }
 
-            if (_playerInputsController.PlayerMovementInputValue < 0)
+            if (_playerInputsController.MovementInput.InputValue < 0)
             {
                 return _targetRotation = _leftSideRotation;
             }

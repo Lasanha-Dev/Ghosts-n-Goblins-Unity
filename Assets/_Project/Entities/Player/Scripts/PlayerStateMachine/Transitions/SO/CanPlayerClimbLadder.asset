@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff0f282d608f5084b884ea31f0624809, type: 3}
-  m_Name: PlayerJumpState
+  m_Script: {fileID: 11500000, guid: 3cbcd6e222293a24da374ab378bfa53b, type: 3}
+  m_Name: CanPlayerClimbLadder
   m_EditorClassIdentifier: 
-  _jumpHeight: 1.4
-  _groundOffSet: {x: 0, y: 0.05}
+  _whatLayerIsLadder:
+    serializedVersion: 2
+    m_Bits: 256

@@ -12,7 +12,7 @@ namespace Game.StateMachine.Player
 
         public override bool CheckTransition()
         {
-            return _playerInputsController.PlayerMovementInputValue != 0;
+            return _playerInputsController.MovementInput.InputValue != 0;
         }
 
         protected override void SetupCondition(EntitieComponentsReferences playerComponentsReferences)
