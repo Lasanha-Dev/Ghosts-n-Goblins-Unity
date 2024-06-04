@@ -1,7 +1,6 @@
-using Game.Entities;
-using UnityEngine;
+using EntityComponentsReferences = Game.Entities.EntityComponentsReferences;
 
-using PlayerComponentsReferences = Game.Entities.Player.PlayerComponentsReferences;
+using UnityEngine;
 
 namespace Game.StateMachine.Player
 {
@@ -11,15 +10,14 @@ namespace Game.StateMachine.Player
     {
         private Rigidbody2D _playerRigibody;
 
-        public override bool CheckTransition()
+        public override bool CanTransit()
         {
             return Mathf.Approximately(_playerRigibody.velocity.y, 0.0f);
         }
 
-
-        protected override void SetupCondition(EntitieComponentsReferences playerComponentsReferences)
+        public override void SetupCondition(StateMachineTransitionsParameters stateMachineTransitionsParameters, EntityComponentsReferences entityComponentsReferences)
         {
-            _playerRigibody = playerComponentsReferences.GetEntitieComponent<Rigidbody2D>();
+            _playerRigibody = entityComponentsReferences.GetEntityComponent<Rigidbody2D>();
         }
     }
 }

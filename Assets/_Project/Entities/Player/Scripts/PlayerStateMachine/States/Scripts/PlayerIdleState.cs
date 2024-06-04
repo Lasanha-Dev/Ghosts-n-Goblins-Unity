@@ -1,12 +1,11 @@
-using PlayerComponentsReferences = Game.Entities.Player.PlayerComponentsReferences;
+using EntityComponentsReferences = Game.Entities.EntityComponentsReferences;
 
 using UnityEngine;
-using Game.Entities;
 
 namespace Game.StateMachine.Player
 {
     [CreateAssetMenu(fileName = "PlayerIdleState", menuName = "StateMachine/Player/States/PlayerIdleState")]
-    public sealed class PlayerIdleState : PlayerStateBase
+    public sealed class PlayerIdleState : StateBase
     {
         private Rigidbody2D _playerRigidbody;
 
@@ -16,16 +15,21 @@ namespace Game.StateMachine.Player
 
         public override void OnEnter()
         {
-            _playerRigidbody.velocity = Vector2.zero;
+            _playerRigidbody.velocity = new Vector2(0, _playerRigidbody.velocity.y);
 
             _playerAnimator.Play(PLAYER_IDLE_ANIMATION_STATE);
         }
 
-        protected override void SetupState(EntitieComponentsReferences playerComponentsReferences)
+        public override void SetupState(StateMachineStatesParameters stateMachineStatesParameters, EntityComponentsReferences entityComponentsReferences)
         {
-            _playerRigidbody = playerComponentsReferences.GetEntitieComponent<Rigidbody2D>();
+            _playerRigidbody = entityComponentsReferences.GetEntityComponent<Rigidbody2D>();
 
-            _playerAnimator = playerComponentsReferences.GetEntitieComponent<Animator>();
+            _playerAnimator = entityComponentsReferences.GetEntityComponent<Animator>();
+        }
+
+        public override void OnExit()
+        {
+            _playerRigidbody.velocity = new Vector2(0, _playerRigidbody.velocity.y);
         }
     }
 }

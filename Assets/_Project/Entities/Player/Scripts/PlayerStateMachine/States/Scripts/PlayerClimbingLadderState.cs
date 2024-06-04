@@ -1,6 +1,6 @@
 using PlayerInputsController = Game.Entities.Player.PlayerInputsController;
 
-using EntitieComponentsReferences = Game.Entities.EntitieComponentsReferences;
+using EntityComponentsReferences = Game.Entities.EntityComponentsReferences;
 
 using PlayerRotationController = Game.Entities.Player.PlayerRotationController;
 
@@ -14,11 +14,12 @@ using Game.EventSystem;
 
 using UnityEngine;
 using Game.Entities;
+using Game.Entities.Player;
 
 namespace Game.StateMachine.Player
 {
     [CreateAssetMenu(fileName = "PlayerClimbingLadderState", menuName = "StateMachine/Player/States/PlayerClimbingLadderState")]
-    public sealed class PlayerClimbingLadderState : PlayerStateBase, IEventInvoker
+    public sealed class PlayerClimbingLadderState : StateBase, IEventInvoker
     {
         [SerializeField] private LayerMask _whatLayerIsLadder;
 
@@ -36,11 +37,11 @@ namespace Game.StateMachine.Player
 
         private Rigidbody2D _playerRigidbody;
 
-        private PlayerInputsController _playerInputsController;
-
         private PlayerRotationController _playerRotationController;
 
         private LadderController _currentLadder;
+
+        private InputDefinition<float> _ladderInput;
 
         private float _defaultGravityScale;
 
@@ -66,17 +67,17 @@ namespace Game.StateMachine.Player
 
         private readonly int PlayerIdleAnimationState = Animator.StringToHash("PlayerStandingIdle");
 
-        protected override void SetupState(EntitieComponentsReferences entitieComponentsReferences)
+        public override void SetupState(StateMachineStatesParameters stateMachineStatesParameters, EntityComponentsReferences entityComponentsReferences)
         {
-            _playerAnimator = entitieComponentsReferences.GetEntitieComponent<Animator>();
+            _playerAnimator = entityComponentsReferences.GetEntityComponent<Animator>();
 
-            _playerCollider = entitieComponentsReferences.GetEntitieComponent<BoxCollider2D>();
+            _playerCollider = entityComponentsReferences.GetEntityComponent<BoxCollider2D>();
 
-            _playerRigidbody = entitieComponentsReferences.GetEntitieComponent<Rigidbody2D>();
+            _playerRigidbody = entityComponentsReferences.GetEntityComponent<Rigidbody2D>();
 
-            _playerInputsController = entitieComponentsReferences.GetEntitieComponent<PlayerInputsController>();
+            _ladderInput = PlayerInputsController.LadderInput;
 
-            _playerRotationController = entitieComponentsReferences.GetEntitieComponent<PlayerRotationController>();
+            _playerRotationController = entityComponentsReferences.GetEntityComponent<PlayerRotationController>();
 
             _defaultGravityScale = _playerRigidbody.gravityScale;
         }
@@ -116,7 +117,7 @@ namespace Game.StateMachine.Player
 
         private void UpdateClimbingAnimation()
         {
-            if(_playerInputsController.LadderInput.IsPressed is false)
+            if(_ladderInput.IsPressed is false)
             {
                 return;
             }
@@ -128,7 +129,7 @@ namespace Game.StateMachine.Player
                 return;
             }
 
-            if(_playerInputsController.LadderInput.InputValue > 0)
+            if(_ladderInput.InputValue > 0)
             {
                 HandleTopClimbAnimation();
 
@@ -201,14 +202,14 @@ namespace Game.StateMachine.Player
 
         private void MovePlayerOnLadder()
         {
-            if (_playerInputsController.LadderInput.InputValue > 0f && PlayerHasReachedTopPoint() is false)
+            if (_ladderInput.InputValue > 0f && PlayerHasReachedTopPoint() is false)
             {
                 _playerRigidbody.position = Vector3.MoveTowards(_playerRigidbody.position, _playerRigidbody.position + Vector2.up, _climbSpeed * Time.fixedDeltaTime);
 
                 return;
             }
 
-            if (_playerInputsController.LadderInput.InputValue < 0f)
+            if (_ladderInput.InputValue < 0f)
             {
                 _playerRigidbody.position = Vector3.MoveTowards(_playerRigidbody.position, _playerRigidbody.position + Vector2.down, _climbSpeed * Time.fixedDeltaTime);
             }

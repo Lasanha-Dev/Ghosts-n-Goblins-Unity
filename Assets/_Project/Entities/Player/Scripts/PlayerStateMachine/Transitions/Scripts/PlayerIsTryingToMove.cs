@@ -1,23 +1,24 @@
+using EntityComponentsReferences = Game.Entities.EntityComponentsReferences;
+
 using UnityEngine;
 
 using Game.Entities.Player;
-using Game.Entities;
 
 namespace Game.StateMachine.Player
 {
     [CreateAssetMenu(fileName = "PlayerIsTryingToMove", menuName = "StateMachine/Player/Transitions/PlayerIsTryingToMove")]
     public sealed class PlayerIsTryingToMove : TransitionConditionBase
     {
-        private PlayerInputsController _playerInputsController;
+        private InputDefinition<float> _playerMovementAction;
 
-        public override bool CheckTransition()
+        public override void SetupCondition(StateMachineTransitionsParameters stateMachineTransitionsParameters, EntityComponentsReferences entityComponentsReferences)
         {
-            return _playerInputsController.MovementInput.InputValue != 0;
+            _playerMovementAction = PlayerInputsController.MovementInput;
         }
 
-        protected override void SetupCondition(EntitieComponentsReferences playerComponentsReferences)
+        public override bool CanTransit()
         {
-            _playerInputsController = playerComponentsReferences.GetEntitieComponent<PlayerInputsController>();
+            return _playerMovementAction.InputValue != 0;
         }
     }
 }

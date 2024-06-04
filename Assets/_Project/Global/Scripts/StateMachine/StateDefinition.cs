@@ -1,28 +1,38 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+
+using SerializeField = UnityEngine.SerializeField;
 
 namespace Game.StateMachine
 {
     [System.Serializable]
     public sealed class StateDefinition
     {
+#if UNITY_EDITOR
         [UnityEngine.HideInInspector]
         public string name;
+#endif
+        [field: SerializeField] public StateBase BaseState { get; private set; }
 
-        public StateBase baseState;
+        [field: SerializeField] public List<StateTransition> StateTransitions { get; private set; }
 
-        public List<StateTransitions> stateTransitions;
+        public StateDefinition(StateBase stateBase)
+        {
+            BaseState = stateBase;
+        }
 
+#if UNITY_EDITOR
         public void ValidateInspector()
         {
-            if (baseState != null)
+            if (BaseState != null)
             {
-                name = baseState.name;
+                name = BaseState.name;
             }
 
-            foreach (StateTransitions stateTransition in stateTransitions)
+            foreach (StateTransition stateTransition in StateTransitions)
             {
                 stateTransition.ValidateInspector();
             }
         }
+#endif
     }
 }

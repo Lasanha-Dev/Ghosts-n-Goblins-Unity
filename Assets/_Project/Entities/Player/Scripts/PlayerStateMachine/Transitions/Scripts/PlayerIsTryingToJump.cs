@@ -1,5 +1,7 @@
-using Game.Entities;
+using EntityComponentsReferences = Game.Entities.EntityComponentsReferences;
+
 using Game.Entities.Player;
+
 using UnityEngine;
 
 namespace Game.StateMachine.Player
@@ -9,15 +11,15 @@ namespace Game.StateMachine.Player
     public sealed class PlayerIsTryingToJump : TransitionConditionBase
     {
         private InputDefinition _playerJumpAction;
-        
-        public override bool CheckTransition()
+
+        public override void SetupCondition(StateMachineTransitionsParameters stateMachineTransitionsParameters, EntityComponentsReferences entityComponentsReferences)
         {
-            return _playerJumpAction.WasPressedThisFrame;
+            _playerJumpAction = PlayerInputsController.JumpInput;
         }
 
-        protected override void SetupCondition(EntitieComponentsReferences playerComponentsReferences)
+        public override bool CanTransit()
         {
-            _playerJumpAction = playerComponentsReferences.GetEntitieComponent<PlayerInputsController>().JumpInput;
+            return _playerJumpAction.WasPressedThisFrame;
         }
     }
 }

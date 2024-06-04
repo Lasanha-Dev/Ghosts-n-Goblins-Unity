@@ -1,4 +1,4 @@
-using EntitieComponentsReferences = Game.Entities.EntitieComponentsReferences;
+using EntityComponentsReferences = Game.Entities.EntityComponentsReferences;
 
 using SerializeField = UnityEngine.SerializeField;
 
@@ -8,45 +8,76 @@ using System.Collections.Generic;
 
 namespace Game.StateMachine
 {
-    [RequireComponent(typeof(EntitieComponentsReferences))]
-
+    [RequireComponent(typeof(EntityComponentsReferences))]
     public sealed class StateMachine : UnityEngine.MonoBehaviour
     {
         [SerializeField] private StateMachineStates _stateMachineStates;
 
-        [SerializeField] private StateMachineParametersBase StateMachineParameters;
+        [SerializeField] private StateMachineStatesParameters _stateMachineStatesParameters;
 
-        private EntitieComponentsReferences _entitieComponentsReferences;
+        [SerializeField] private StateMachineTransitionsParameters _stateMachineTransitionsParameters;
+
+        private EntityComponentsReferences _entityComponentsReferences;
 
         private StateBase _currentState;
 
         private void Awake()
         {
-            _entitieComponentsReferences = GetComponent<EntitieComponentsReferences>();
+            _entityComponentsReferences = GetComponent<EntityComponentsReferences>();
 
             _stateMachineStates = Instantiate(_stateMachineStates);
 
-            InitializeStates();
+            InitializeStateMachine();
         }
 
-        private void Start()
+        private void OnEnable()
         {
             ResetStateMachine();
         }
 
-        private void InitializeStates()
+        private void Update()
+        {
+            _currentState.OnUpdate();
+        }
+
+        private void LateUpdate()
+        {
+            if (CanTransitToAnyState(out StateBase anyNextState))
+            {
+                SwitchState(anyNextState);
+
+                return;
+            }
+
+            if (CanTransitToAnotherState(out StateBase nextState))
+            {
+                SwitchState(nextState);
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            _currentState.OnFixedUpdate();
+        }
+
+        private void InitializeStateMachine()
         {
             foreach (StateDefinition stateDefinition in _stateMachineStates.StatesDefinitions)
             {
-                InitializeState(stateDefinition.baseState);
+                InitializeState(stateDefinition.BaseState);
 
-                InitializeStateTransitions(stateDefinition.baseState);
+                InitializeStateTransitions(stateDefinition.BaseState);
+            }
+
+            foreach (AnyStateDefinition anyStateDefinition in _stateMachineStates.AnyStatesDefinitions)
+            {
+                InitializeStateTransitions(anyStateDefinition.StateTransition.TransitionState);
             }
         }
 
         private void InitializeStateTransitions(StateBase state)
         {
-            foreach (StateTransitions transition in state.StateTransitions)
+            foreach (StateTransition transition in state.StateTransitions)
             {
                 InitializeState(transition.TransitionState);
 
@@ -56,108 +87,105 @@ namespace Game.StateMachine
 
         private void InitializeState(StateBase state)
         {
-            state.InitializeState(StateMachineParameters, _entitieComponentsReferences);
+            state.SetupState(_stateMachineStatesParameters, _entityComponentsReferences);
         }
 
         private void InitializeTransitionConditions(IEnumerable<TransitionConditionBase> transitionConditions)
         {
             foreach (TransitionConditionBase condition in transitionConditions)
             {
-                condition.InitializeCondition(_entitieComponentsReferences);
+                condition.SetupCondition(_stateMachineTransitionsParameters, _entityComponentsReferences);
             }
         }
 
         private void ResetStateMachine()
         {
-            _currentState = _stateMachineStates.StatesDefinitions.First.Value.baseState;
+            _currentState = _stateMachineStates.StatesDefinitions.First.Value.BaseState;
 
-            SwitchState(_currentState);
-        }
-
-        private void Update()
-        {
-            UpdateStateMachine();
-        }
-
-        private void LateUpdate()
-        {
-            StateBase nextState = CheckCurrentStateTransitions();
-
-            if (nextState != null)
-            {
-                SwitchState(nextState);
-            }
-        }
-
-        private void FixedUpdate()
-        {
-            FixedUpdateStateMachine();
-        }
-
-        public void UpdateStateMachine()
-        {
-            _currentState.OnUpdate();
-        }
-
-        public void FixedUpdateStateMachine()
-        {
-            _currentState.OnFixedUpdate();
+            _currentState.OnEnter();
         }
 
         private void SwitchState(StateBase nextState)
         {
-            if (_currentState != null)
-            {
-                _currentState.OnExit();
-            }
+            _currentState.OnExit();
 
             _currentState = nextState;
 
             _currentState.OnEnter();
         }
 
-        private StateBase CheckCurrentStateTransitions()
+        private bool CanTransitToAnotherState(out StateBase state)
         {
-            foreach (StateTransitions transition in _currentState.StateTransitions)
+            state = null;
+
+            foreach (StateTransition transition in _currentState.StateTransitions)
             {
                 if (transition.AllConditionsNeedsToMatch == false && AnyTransitionConditionMatched(transition))
                 {
-                    return transition.TransitionState;
+                    state = transition.TransitionState;
+
+                    return true;
                 }
 
                 if (transition.AllConditionsNeedsToMatch && AllTransitionConditionsMatched(transition))
                 {
-                    return transition.TransitionState;
+                    state = transition.TransitionState;
+
+                    return true;
                 }
             }
 
-            bool AllTransitionConditionsMatched(StateTransitions transition)
+            return false;
+        }
+
+        private bool CanTransitToAnyState(out StateBase state)
+        {
+            state = null;
+
+            foreach (AnyStateDefinition anyStateDefinition in _stateMachineStates.AnyStatesDefinitions)
             {
-                foreach (TransitionConditionBase condition in transition.TransitionConditions)
+                if (anyStateDefinition.StateTransition.AllConditionsNeedsToMatch == false && AnyTransitionConditionMatched(anyStateDefinition.StateTransition))
                 {
-                    if (!condition.CheckTransition())
-                    {
-                        return false;
-                    }
+                    state = anyStateDefinition.StateTransition.TransitionState;
+
+                    return true;
                 }
 
-                return true;
+                if (anyStateDefinition.StateTransition.AllConditionsNeedsToMatch && AllTransitionConditionsMatched(anyStateDefinition.StateTransition))
+                {
+                    state = anyStateDefinition.StateTransition.TransitionState;
+
+                    return true;
+                }
             }
 
-            bool AnyTransitionConditionMatched(StateTransitions transitions)
+            return false;
+        }
+
+        private bool AllTransitionConditionsMatched(StateTransition transition)
+        {
+            foreach (TransitionConditionBase condition in transition.TransitionConditions)
             {
-                foreach (TransitionConditionBase condition in transitions.TransitionConditions)
+                if (condition.CanTransit() == false)
                 {
-                    if (condition.CheckTransition())
-                    {
-                        return true;
-                    }
+                    return false;
                 }
-
-                return false;
             }
 
-            return null;
+            return true;
+        }
+
+        private bool AnyTransitionConditionMatched(StateTransition transitions)
+        {
+            foreach (TransitionConditionBase condition in transitions.TransitionConditions)
+            {
+                if (condition.CanTransit())
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

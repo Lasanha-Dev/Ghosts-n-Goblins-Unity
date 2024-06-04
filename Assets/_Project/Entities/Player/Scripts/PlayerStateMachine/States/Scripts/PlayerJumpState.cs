@@ -1,14 +1,12 @@
-using Game.Entities;
-using UnityEngine;
+using EntityComponentsReferences = Game.Entities.EntityComponentsReferences;
 
-using PlayerComponentsReferences = Game.Entities.Player.PlayerComponentsReferences;
+using UnityEngine;
 
 namespace Game.StateMachine.Player
 {
-
     [CreateAssetMenu(fileName = "PlayerJumpState", menuName = "StateMachine/Player/States/PlayerJumpState")]
 
-    public sealed class PlayerJumpState : PlayerStateBase
+    public sealed class PlayerJumpState : StateBase
     {
         [SerializeField] private float _jumpHeight;
 
@@ -23,6 +21,15 @@ namespace Game.StateMachine.Player
         private readonly int PlayerMovingJumpAnimationState = Animator.StringToHash("PlayerMovingJump");
 
         private float _jumpForce;
+
+        public override void SetupState(StateMachineStatesParameters stateMachineStatesParameters, EntityComponentsReferences entityComponentsReferences)
+        {
+            _playerRigidbody = entityComponentsReferences.GetEntityComponent<Rigidbody2D>();
+
+            _playerAnimator = entityComponentsReferences.GetEntityComponent<Animator>();
+
+            _jumpForce = CalculateJumpForce();
+        }
 
         public override void OnEnter()
         {
@@ -53,15 +60,6 @@ namespace Game.StateMachine.Player
         private float CalculateJumpForce()
         {
             return Mathf.Sqrt(2 * (Physics2D.gravity.magnitude * _playerRigidbody.gravityScale) * _jumpHeight);
-        }
-
-        protected override void SetupState(EntitieComponentsReferences playerComponentsReferences)
-        {
-            _playerRigidbody = playerComponentsReferences.GetEntitieComponent<Rigidbody2D>();
-
-            _playerAnimator = playerComponentsReferences.GetEntitieComponent<Animator>();
-
-            _jumpForce = CalculateJumpForce();
         }
     }
 }

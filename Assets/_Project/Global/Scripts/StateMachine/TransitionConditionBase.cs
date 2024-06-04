@@ -1,30 +1,16 @@
-using EntitieComponentsReferences = Game.Entities.EntitieComponentsReferences;
+using EntityComponentsReferences = Game.Entities.EntityComponentsReferences;
 
 namespace Game.StateMachine
 {
     public abstract class TransitionConditionBase : UnityEngine.ScriptableObject
     {
-        private bool _isInitialized = false;
+        public virtual void SetupCondition(StateMachineTransitionsParameters stateMachineTransitionsParameters, EntityComponentsReferences entityComponentsReferences) { }
 
-        private void OnEnable()
+        public abstract bool CanTransit();
+
+        public virtual object GetTransitionParameterObject()
         {
-            _isInitialized = false;
+            return null;
         }
-
-        public void InitializeCondition(EntitieComponentsReferences entitieComponentsReferences)
-        {
-            if (_isInitialized)
-            {
-                return;
-            }
-
-            _isInitialized = true;
-
-            SetupCondition(entitieComponentsReferences);
-        }
-
-        protected abstract void SetupCondition(EntitieComponentsReferences playerComponentsReferences);
-
-        public abstract bool CheckTransition();
     }
 }

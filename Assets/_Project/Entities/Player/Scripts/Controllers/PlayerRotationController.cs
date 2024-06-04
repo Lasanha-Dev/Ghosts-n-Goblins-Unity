@@ -4,7 +4,7 @@ namespace Game.Entities.Player
 {
     public sealed class PlayerRotationController : MonoBehaviour
     {
-        private PlayerInputsController _playerInputsController;
+        private InputDefinition<float> _playerMovementInput;
 
         private Quaternion _targetRotation = Quaternion.identity;
 
@@ -14,7 +14,7 @@ namespace Game.Entities.Player
 
         private void Awake()
         {
-            _playerInputsController = GetComponent<PlayerInputsController>();
+            _playerMovementInput = PlayerInputsController.MovementInput;
         }
 
         private void LateUpdate()
@@ -24,12 +24,12 @@ namespace Game.Entities.Player
 
         private Quaternion GetTargetRotation()
         {
-            if (_playerInputsController.MovementInput.InputValue > 0)
+            if (_playerMovementInput.InputValue > 0)
             {
                 return _targetRotation = _rightSideRotation;
             }
 
-            if (_playerInputsController.MovementInput.InputValue < 0)
+            if (_playerMovementInput.InputValue < 0)
             {
                 return _targetRotation = _leftSideRotation;
             }

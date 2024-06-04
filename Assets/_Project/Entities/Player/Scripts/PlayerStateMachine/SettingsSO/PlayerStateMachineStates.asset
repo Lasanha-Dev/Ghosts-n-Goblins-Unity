@@ -12,54 +12,84 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 498dbdc51fb9ca34a83b25bc4f079c18, type: 3}
   m_Name: PlayerStateMachineStates
   m_EditorClassIdentifier: 
-  _statesDefinition:
+  <StatesDefinitionSetup>k__BackingField:
   - name: PlayerIdleState
-    baseState: {fileID: 11400000, guid: f2c1f396b444f6246b527ac8821020b3, type: 2}
-    stateTransitions:
+    <BaseState>k__BackingField: {fileID: 11400000, guid: f2c1f396b444f6246b527ac8821020b3, type: 2}
+    <StateTransitions>k__BackingField:
     - name: Transition To - PlayerMovementState
       <TransitionState>k__BackingField: {fileID: 11400000, guid: c74355a27d9b6a84eb0598bb87ff079b, type: 2}
       <TransitionConditions>k__BackingField:
+      - {fileID: 11400000, guid: e0235dfc520af1e43a3a0ffcd66a84cb, type: 2}
       - {fileID: 11400000, guid: c2f89e7944aa0cb4ca5c31a6339c80c5, type: 2}
-      <AllConditionsNeedsToMatch>k__BackingField: 0
+      <AllConditionsNeedsToMatch>k__BackingField: 1
     - name: Transition To - PlayerJumpState
       <TransitionState>k__BackingField: {fileID: 11400000, guid: 9f15142984df01840ad399f61ee32f72, type: 2}
       <TransitionConditions>k__BackingField:
-      - {fileID: 11400000, guid: 4608990bc25783e41b22f5b7ac514c74, type: 2}
       - {fileID: 11400000, guid: e0235dfc520af1e43a3a0ffcd66a84cb, type: 2}
+      - {fileID: 11400000, guid: 4608990bc25783e41b22f5b7ac514c74, type: 2}
       <AllConditionsNeedsToMatch>k__BackingField: 1
     - name: Transition To - PlayerClimbingLadderState
       <TransitionState>k__BackingField: {fileID: 11400000, guid: 8f8521e406876a94485df3b806671f1f, type: 2}
       <TransitionConditions>k__BackingField:
-      - {fileID: 11400000, guid: 9f4540caed02ddf43814403356650d3f, type: 2}
       - {fileID: 11400000, guid: e0235dfc520af1e43a3a0ffcd66a84cb, type: 2}
+      - {fileID: 11400000, guid: 9f4540caed02ddf43814403356650d3f, type: 2}
+      <AllConditionsNeedsToMatch>k__BackingField: 1
+    - name: Transition To - PlayerCrouchState
+      <TransitionState>k__BackingField: {fileID: 11400000, guid: 21c712f9579b35248b24b82c81582a06, type: 2}
+      <TransitionConditions>k__BackingField:
+      - {fileID: 11400000, guid: e0235dfc520af1e43a3a0ffcd66a84cb, type: 2}
+      - {fileID: 11400000, guid: 4e68f59ee5ccd6147a197f4f68ed474e, type: 2}
       <AllConditionsNeedsToMatch>k__BackingField: 1
   - name: PlayerMovementState
-    baseState: {fileID: 11400000, guid: c74355a27d9b6a84eb0598bb87ff079b, type: 2}
-    stateTransitions:
+    <BaseState>k__BackingField: {fileID: 11400000, guid: c74355a27d9b6a84eb0598bb87ff079b, type: 2}
+    <StateTransitions>k__BackingField:
     - name: Transition To - PlayerIdleState
       <TransitionState>k__BackingField: {fileID: 11400000, guid: f2c1f396b444f6246b527ac8821020b3, type: 2}
       <TransitionConditions>k__BackingField:
       - {fileID: 11400000, guid: 3271c552181fcc14ea166e0df416faa1, type: 2}
-      <AllConditionsNeedsToMatch>k__BackingField: 0
+      <AllConditionsNeedsToMatch>k__BackingField: 1
     - name: Transition To - PlayerJumpState
       <TransitionState>k__BackingField: {fileID: 11400000, guid: 9f15142984df01840ad399f61ee32f72, type: 2}
       <TransitionConditions>k__BackingField:
-      - {fileID: 11400000, guid: 4608990bc25783e41b22f5b7ac514c74, type: 2}
       - {fileID: 11400000, guid: e0235dfc520af1e43a3a0ffcd66a84cb, type: 2}
+      - {fileID: 11400000, guid: 4608990bc25783e41b22f5b7ac514c74, type: 2}
+      <AllConditionsNeedsToMatch>k__BackingField: 1
+    - name: Transition To - PlayerClimbingLadderState
+      <TransitionState>k__BackingField: {fileID: 11400000, guid: 8f8521e406876a94485df3b806671f1f, type: 2}
+      <TransitionConditions>k__BackingField:
+      - {fileID: 11400000, guid: e0235dfc520af1e43a3a0ffcd66a84cb, type: 2}
+      - {fileID: 11400000, guid: 9f4540caed02ddf43814403356650d3f, type: 2}
+      <AllConditionsNeedsToMatch>k__BackingField: 1
+    - name: Transition To - PlayerCrouchState
+      <TransitionState>k__BackingField: {fileID: 11400000, guid: 21c712f9579b35248b24b82c81582a06, type: 2}
+      <TransitionConditions>k__BackingField:
+      - {fileID: 11400000, guid: e0235dfc520af1e43a3a0ffcd66a84cb, type: 2}
+      - {fileID: 11400000, guid: 4e68f59ee5ccd6147a197f4f68ed474e, type: 2}
       <AllConditionsNeedsToMatch>k__BackingField: 1
   - name: PlayerJumpState
-    baseState: {fileID: 11400000, guid: 9f15142984df01840ad399f61ee32f72, type: 2}
-    stateTransitions:
+    <BaseState>k__BackingField: {fileID: 11400000, guid: 9f15142984df01840ad399f61ee32f72, type: 2}
+    <StateTransitions>k__BackingField:
     - name: Transition To - PlayerIdleState
       <TransitionState>k__BackingField: {fileID: 11400000, guid: f2c1f396b444f6246b527ac8821020b3, type: 2}
       <TransitionConditions>k__BackingField:
       - {fileID: 11400000, guid: e0235dfc520af1e43a3a0ffcd66a84cb, type: 2}
       <AllConditionsNeedsToMatch>k__BackingField: 0
   - name: PlayerClimbingLadderState
-    baseState: {fileID: 11400000, guid: 8f8521e406876a94485df3b806671f1f, type: 2}
-    stateTransitions:
+    <BaseState>k__BackingField: {fileID: 11400000, guid: 8f8521e406876a94485df3b806671f1f, type: 2}
+    <StateTransitions>k__BackingField:
     - name: Transition To - PlayerIdleState
       <TransitionState>k__BackingField: {fileID: 11400000, guid: f2c1f396b444f6246b527ac8821020b3, type: 2}
       <TransitionConditions>k__BackingField:
       - {fileID: 11400000, guid: e0235dfc520af1e43a3a0ffcd66a84cb, type: 2}
       <AllConditionsNeedsToMatch>k__BackingField: 0
+  - name: PlayerCrouchState
+    <BaseState>k__BackingField: {fileID: 11400000, guid: 21c712f9579b35248b24b82c81582a06, type: 2}
+    <StateTransitions>k__BackingField:
+    - name: Transition To - PlayerIdleState
+      <TransitionState>k__BackingField: {fileID: 11400000, guid: f2c1f396b444f6246b527ac8821020b3, type: 2}
+      <TransitionConditions>k__BackingField:
+      - {fileID: 11400000, guid: 5cdc5e9548ccf084e95f2fea1af45b7c, type: 2}
+      <AllConditionsNeedsToMatch>k__BackingField: 0
+  <AnyStatesDefinitionSetup>k__BackingField: []
+  _stateMachineStatesParameters: {fileID: 11400000, guid: 69955d86255e8c74f945e374c9d94632, type: 2}
+  _stateMachineTransitionsParameters: {fileID: 11400000, guid: e2112d0d03947e642b917e29db02ad3a, type: 2}

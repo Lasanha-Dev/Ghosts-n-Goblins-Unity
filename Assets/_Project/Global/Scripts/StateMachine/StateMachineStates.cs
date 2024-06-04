@@ -4,66 +4,106 @@ using UnityEngine;
 
 using Type = System.Type;
 
+using Object = System.Object;
+
+using System.Linq;
+
 namespace Game.StateMachine
 {
     [CreateAssetMenu(fileName = "StateMachineStates", menuName = "StateMachine/StateMachineStates")]
     public sealed class StateMachineStates : ScriptableObject
     {
-        [SerializeField] private List<StateDefinition> _statesDefinition;
+        [field: SerializeField] public List<StateDefinition> StatesDefinitionSetup { get; private set; }
+
+        [field: SerializeField] public List<AnyStateDefinition> AnyStatesDefinitionSetup { get; private set; }
 
         public LinkedList<StateDefinition> StatesDefinitions { get; private set; } = new LinkedList<StateDefinition>();
 
+        public LinkedList<AnyStateDefinition> AnyStatesDefinitions { get; private set; } = new LinkedList<AnyStateDefinition>();
+
         private readonly Dictionary<Type, Object> _cachedObjectsInstances = new Dictionary<Type, Object>();
 
-        private void Awake()
+#if UNITY_EDITOR
+        [SerializeField] private StateMachineStatesParameters _stateMachineStatesParameters;
+
+        [SerializeField] private StateMachineTransitionsParameters _stateMachineTransitionsParameters;
+#endif
+        private void OnEnable()
         {
             _cachedObjectsInstances.Clear();
 
-            foreach (StateDefinition stateDefinition in _statesDefinition)
+            if(StatesDefinitionSetup == null)
             {
-                StateDefinition newStateDefinition = new StateDefinition();
-
-                InstantiateBaseState(stateDefinition, newStateDefinition);
-
-                newStateDefinition.baseState.SetStateTransitions(InstantiateStateTransitions(stateDefinition));
-
-                StatesDefinitions.AddLast(newStateDefinition);
-            }
-        }
-
-        private IReadOnlyCollection<StateTransitions> InstantiateStateTransitions(StateDefinition stateDefinition)
-        {
-            HashSet<StateTransitions> stateTransitions = new HashSet<StateTransitions>();
-
-            foreach (StateTransitions stateTransition in stateDefinition.stateTransitions)
-            {
-                stateTransitions.Add(new StateTransitions(GetTransitionStateFromStateTransition(stateTransition), GetTransitionConditionsFromStateTransition(stateTransition), stateTransition.AllConditionsNeedsToMatch));
-            }
-
-            return stateTransitions;
-        }
-
-        private void InstantiateBaseState(StateDefinition stateDefinition, StateDefinition newStateDefinition)
-        {
-            if (_cachedObjectsInstances.ContainsKey(stateDefinition.baseState.GetType()) == false)
-            {
-                newStateDefinition.baseState = Instantiate(stateDefinition.baseState);
-
-                _cachedObjectsInstances.Add(stateDefinition.baseState.GetType(), newStateDefinition.baseState);
-
                 return;
             }
 
-            newStateDefinition.baseState = (StateBase)_cachedObjectsInstances[stateDefinition.baseState.GetType()];
+            foreach (StateDefinition stateDefinition in StatesDefinitionSetup)
+            {
+                if (stateDefinition.BaseState == null || stateDefinition.StateTransitions == null)
+                {
+                    continue;
+                }
+
+                StateDefinition newStateDefinition = new StateDefinition(InstantiateStateBase(stateDefinition.BaseState));
+
+                newStateDefinition.BaseState.SetStateTransitions(InstantiateStateTransitions(stateDefinition.StateTransitions));
+
+                StatesDefinitions.AddLast(newStateDefinition);
+            }
+
+            foreach (AnyStateDefinition anyStateDefinition in AnyStatesDefinitionSetup)
+            {
+                if (anyStateDefinition.StateTransition == null || anyStateDefinition.StateTransition.TransitionState == null)
+                {
+                    continue;
+                }
+
+                StateBase stateBase = InstantiateStateBase(anyStateDefinition.StateTransition.TransitionState);
+
+                StateTransition stateTransition = InstantiateStateTransition(anyStateDefinition.StateTransition);
+
+                AnyStateDefinition stateDefinition = new AnyStateDefinition();
+
+                stateDefinition.StateTransition = new StateTransition(stateBase, stateTransition.TransitionConditions, stateTransition.AllConditionsNeedsToMatch);
+
+                AnyStatesDefinitions.AddLast(stateDefinition);
+            }
         }
 
-        private StateBase GetTransitionStateFromStateTransition(StateTransitions stateTransition)
+        private StateTransition InstantiateStateTransition(StateTransition stateTransitionSetup)
+        {
+            return new StateTransition(GetTransitionStateFromStateTransition(stateTransitionSetup), GetTransitionConditionsFromStateTransition(stateTransitionSetup), stateTransitionSetup.AllConditionsNeedsToMatch);
+        }
+
+        private IReadOnlyList<StateTransition> InstantiateStateTransitions(IEnumerable<StateTransition> stateTransitionsSetup)
+        {
+            HashSet<StateTransition> stateTransitions = new HashSet<StateTransition>();
+
+            foreach (StateTransition stateTransition in stateTransitionsSetup)
+            {
+                stateTransitions.Add(new StateTransition(GetTransitionStateFromStateTransition(stateTransition), GetTransitionConditionsFromStateTransition(stateTransition), stateTransition.AllConditionsNeedsToMatch));
+            }
+
+            return stateTransitions.ToList();
+        }
+
+        private StateBase InstantiateStateBase(StateBase stateBase)
+        {
+            Type stateBaseType = stateBase.GetType();
+
+            if (_cachedObjectsInstances.ContainsKey(stateBaseType) == false)
+            {
+                _cachedObjectsInstances.Add(stateBaseType, stateBase);
+            }
+
+            return (StateBase)_cachedObjectsInstances[stateBaseType];
+        }
+
+        private StateBase GetTransitionStateFromStateTransition(StateTransition stateTransition)
         {
             if (_cachedObjectsInstances.ContainsKey(stateTransition.TransitionState.GetType()) == false)
             {
-                StateBase transitionState;
-
-                transitionState = Instantiate(stateTransition.TransitionState);
+                StateBase transitionState = Instantiate(stateTransition.TransitionState);
 
                 _cachedObjectsInstances.Add(transitionState.GetType(), transitionState);
             }
@@ -71,7 +111,7 @@ namespace Game.StateMachine
             return (StateBase)_cachedObjectsInstances[stateTransition.TransitionState.GetType()];
         }
 
-        private IReadOnlyCollection<TransitionConditionBase> GetTransitionConditionsFromStateTransition(StateTransitions stateTransition)
+        private List<TransitionConditionBase> GetTransitionConditionsFromStateTransition(StateTransition stateTransition)
         {
             HashSet<TransitionConditionBase> transitions = new HashSet<TransitionConditionBase>();
 
@@ -91,15 +131,32 @@ namespace Game.StateMachine
                 transitions.Add((TransitionConditionBase)_cachedObjectsInstances[transitionCondition.GetType()]);
             }
 
-            return transitions;
+            return transitions.ToList();
         }
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
-            foreach (StateDefinition stateDefinition in _statesDefinition)
+            foreach (StateDefinition stateDefinition in StatesDefinitionSetup)
             {
                 stateDefinition.ValidateInspector();
             }
+
+            foreach (AnyStateDefinition anyStateDefinition in AnyStatesDefinitionSetup)
+            {
+                anyStateDefinition.ValidateInspector();
+            }
+
+            if (_stateMachineStatesParameters != null)
+            {
+                _stateMachineStatesParameters.OnValidate();
+            }
+
+            if(_stateMachineTransitionsParameters != null)
+            {
+                _stateMachineTransitionsParameters.OnValidate();
+            }
         }
+#endif
     }
 }

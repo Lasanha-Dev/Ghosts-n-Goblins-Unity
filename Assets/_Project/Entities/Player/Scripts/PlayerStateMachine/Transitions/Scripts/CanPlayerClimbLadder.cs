@@ -1,7 +1,11 @@
-using Game.Entities;
+using EntityComponentsReferences = Game.Entities.EntityComponentsReferences;
+
 using Game.Entities.Player;
+
 using System;
+
 using UnityEngine;
+
 namespace Game.StateMachine.Player
 {
     [CreateAssetMenu(fileName = "CanPlayerClimbLadder", menuName = "StateMachine/Player/Transitions/CanPlayerClimbLadder")]
@@ -13,18 +17,18 @@ namespace Game.StateMachine.Player
 
         private readonly Collider2D[] _overlapHitsResults = new Collider2D[1];
 
-        private PlayerInputsController _playerInputsController;
+        private InputDefinition<float> _ladderInput;
 
-        protected override void SetupCondition(EntitieComponentsReferences playerComponentsReferences)
+        public override void SetupCondition(StateMachineTransitionsParameters stateMachineTransitionsParameters, EntityComponentsReferences entityComponentsReferences)
         {
-            _playerBoxCollider = playerComponentsReferences.GetEntitieComponent<BoxCollider2D>();
+            _playerBoxCollider = entityComponentsReferences.GetEntityComponent<BoxCollider2D>();
 
-            _playerInputsController = playerComponentsReferences.GetEntitieComponent<PlayerInputsController>(); 
+            _ladderInput = PlayerInputsController.LadderInput;
         }
 
-        public override bool CheckTransition()
+        public override bool CanTransit()
         {
-            if(_playerInputsController.LadderInput.WasPressedThisFrame is false)
+            if (_ladderInput.WasPressedThisFrame is false)
             {
                 return false;
             }
@@ -38,12 +42,12 @@ namespace Game.StateMachine.Player
                 return false;
             }
 
-            if (_playerInputsController.LadderInput.InputValue > 0.5f && _playerBoxCollider.transform.position.y >= _overlapHitsResults[0].transform.position.y)
+            if (_ladderInput.InputValue > 0.5f && _playerBoxCollider.transform.position.y >= _overlapHitsResults[0].transform.position.y)
             {
                 return false;
             }
 
-            if (_playerInputsController.LadderInput.InputValue < -0.5f && _playerBoxCollider.transform.position.y <= _overlapHitsResults[0].transform.position.y)
+            if (_ladderInput.InputValue < -0.5f && _playerBoxCollider.transform.position.y <= _overlapHitsResults[0].transform.position.y)
             {
                 return false;
             }

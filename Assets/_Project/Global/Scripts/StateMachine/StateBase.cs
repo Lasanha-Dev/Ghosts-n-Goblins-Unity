@@ -1,4 +1,4 @@
-using EntitieComponentsReferences = Game.Entities.EntitieComponentsReferences;
+using EntityComponentsReferences = Game.Entities.EntityComponentsReferences;
 
 using System.Collections.Generic;
 
@@ -8,23 +8,19 @@ namespace Game.StateMachine
 {
     public abstract class StateBase : ScriptableObject
     {
-        public IReadOnlyCollection<StateTransitions> StateTransitions { get; protected set; }
+        public IReadOnlyList<StateTransition> StateTransitions { get; private set; }
 
-        protected bool _isInitialized = false;
-
-        public void SetStateTransitions(IReadOnlyCollection<StateTransitions> stateTransitions)
+        public void SetStateTransitions(IReadOnlyList<StateTransition> stateTransitions)
         {
-            StateTransitions ??= stateTransitions;
+            StateTransitions = stateTransitions;
         }
 
-        public virtual void InitializeState(StateMachineParametersBase stateMachineParameters, EntitieComponentsReferences entitieComponentsReferences)
+        public abstract void SetupState(StateMachineStatesParameters stateMachineStatesParameters, EntityComponentsReferences entityComponentsReferences);
+
+        public virtual object GetStateParameterObject()
         {
-            _isInitialized = true;
-
-            SetupState(entitieComponentsReferences);
+            return null;
         }
-
-        protected abstract void SetupState(EntitieComponentsReferences playerComponentsReferences);
 
         public virtual void OnEnter()
         {
