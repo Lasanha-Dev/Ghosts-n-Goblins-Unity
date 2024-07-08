@@ -40,6 +40,11 @@ MonoBehaviour:
       - {fileID: 11400000, guid: e0235dfc520af1e43a3a0ffcd66a84cb, type: 2}
       - {fileID: 11400000, guid: 4e68f59ee5ccd6147a197f4f68ed474e, type: 2}
       <AllConditionsNeedsToMatch>k__BackingField: 1
+    - name: Transition To - PlayerAttackState
+      <TransitionState>k__BackingField: {fileID: 11400000, guid: f055aeda3fd59f74482ff6a3a69cec66, type: 2}
+      <TransitionConditions>k__BackingField:
+      - {fileID: 11400000, guid: 9d44280118e709542934c670a706fc31, type: 2}
+      <AllConditionsNeedsToMatch>k__BackingField: 0
   - name: PlayerMovementState
     <BaseState>k__BackingField: {fileID: 11400000, guid: c74355a27d9b6a84eb0598bb87ff079b, type: 2}
     <StateTransitions>k__BackingField:
@@ -74,6 +79,11 @@ MonoBehaviour:
       <TransitionConditions>k__BackingField:
       - {fileID: 11400000, guid: e0235dfc520af1e43a3a0ffcd66a84cb, type: 2}
       <AllConditionsNeedsToMatch>k__BackingField: 0
+    - name: Transition To - PlayerAttackState
+      <TransitionState>k__BackingField: {fileID: 11400000, guid: f055aeda3fd59f74482ff6a3a69cec66, type: 2}
+      <TransitionConditions>k__BackingField:
+      - {fileID: 11400000, guid: 9d44280118e709542934c670a706fc31, type: 2}
+      <AllConditionsNeedsToMatch>k__BackingField: 0
   - name: PlayerClimbingLadderState
     <BaseState>k__BackingField: {fileID: 11400000, guid: 8f8521e406876a94485df3b806671f1f, type: 2}
     <StateTransitions>k__BackingField:
@@ -90,6 +100,32 @@ MonoBehaviour:
       <TransitionConditions>k__BackingField:
       - {fileID: 11400000, guid: 5cdc5e9548ccf084e95f2fea1af45b7c, type: 2}
       <AllConditionsNeedsToMatch>k__BackingField: 0
+    - name: Transition To - PlayerAttackState
+      <TransitionState>k__BackingField: {fileID: 11400000, guid: f055aeda3fd59f74482ff6a3a69cec66, type: 2}
+      <TransitionConditions>k__BackingField:
+      - {fileID: 11400000, guid: 9d44280118e709542934c670a706fc31, type: 2}
+      <AllConditionsNeedsToMatch>k__BackingField: 0
+  - name: PlayerAttackState
+    <BaseState>k__BackingField: {fileID: 11400000, guid: f055aeda3fd59f74482ff6a3a69cec66, type: 2}
+    <StateTransitions>k__BackingField:
+    - name: Transition To - PlayerCrouchState
+      <TransitionState>k__BackingField: {fileID: 11400000, guid: 21c712f9579b35248b24b82c81582a06, type: 2}
+      <TransitionConditions>k__BackingField:
+      - {fileID: 11400000, guid: 4e68f59ee5ccd6147a197f4f68ed474e, type: 2}
+      - {fileID: 11400000, guid: 11eec3f736227ff4d92a79789dece6c7, type: 2}
+      <AllConditionsNeedsToMatch>k__BackingField: 1
+    - name: Transition To - PlayerIdleState
+      <TransitionState>k__BackingField: {fileID: 11400000, guid: f2c1f396b444f6246b527ac8821020b3, type: 2}
+      <TransitionConditions>k__BackingField:
+      - {fileID: 11400000, guid: 11eec3f736227ff4d92a79789dece6c7, type: 2}
+      - {fileID: 11400000, guid: e0235dfc520af1e43a3a0ffcd66a84cb, type: 2}
+      <AllConditionsNeedsToMatch>k__BackingField: 1
+    - name: Transition To - PlayerAttackState
+      <TransitionState>k__BackingField: {fileID: 11400000, guid: f055aeda3fd59f74482ff6a3a69cec66, type: 2}
+      <TransitionConditions>k__BackingField:
+      - {fileID: 11400000, guid: 9d44280118e709542934c670a706fc31, type: 2}
+      - {fileID: 11400000, guid: 11eec3f736227ff4d92a79789dece6c7, type: 2}
+      <AllConditionsNeedsToMatch>k__BackingField: 1
   <AnyStatesDefinitionSetup>k__BackingField: []
   _stateMachineStatesParameters: {fileID: 11400000, guid: 69955d86255e8c74f945e374c9d94632, type: 2}
   _stateMachineTransitionsParameters: {fileID: 11400000, guid: e2112d0d03947e642b917e29db02ad3a, type: 2}

@@ -18,7 +18,7 @@ namespace Game.StateMachine.Player
 
         public override bool CanTransit()
         {
-           return _playerCrouchAction.WasPressedThisFrame;
+           return _playerCrouchAction.IsPressed;
         }
     }
 }

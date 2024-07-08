@@ -18,6 +18,6 @@ MonoBehaviour:
   _whatLayerIsGround:
     serializedVersion: 2
     m_Bits: 128
-  _climbAnimationSpeed: 10
+  _climbAnimationSpeed: 9
   _climbSpeed: 4
   _animationAdjustmentStepAmount: 0.5

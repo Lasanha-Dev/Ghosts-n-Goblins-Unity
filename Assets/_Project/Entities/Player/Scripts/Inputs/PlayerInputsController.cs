@@ -8,11 +8,13 @@ namespace Game.Entities.Player
 
         public static InputDefinition JumpInput { get; private set; }
 
+        public static InputDefinition CrouchInput { get; private set; }
+
+        public static InputDefinition AttackInput { get; private set; }
+
         public static InputDefinition<float> MovementInput { get; private set; }
 
         public static InputDefinition<float> LadderInput { get; private set; }
-
-        public static InputDefinition CrouchInput { get; private set; }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
         private static void InitializePlayerInputs()
@@ -28,6 +30,8 @@ namespace Game.Entities.Player
             LadderInput = new InputDefinition<float>(_playerInputActions.Player.Ladder);
 
             CrouchInput = new InputDefinition(_playerInputActions.Player.Crouch);
+
+            AttackInput = new InputDefinition(_playerInputActions.Player.Attack);
         }
     }
 }

@@ -9,6 +9,8 @@ namespace Game.StateMachine.Player
     {
         private readonly int PlayerCrouchAnimationState = Animator.StringToHash("PlayerCrouchedIdleAnimation");
 
+        private readonly int PLAYER_CROUCH_PARAM_BOOL_ID = Animator.StringToHash("IsCrouched");
+
         private Animator _playerAnimator;
 
         private Rigidbody2D _playerRigidbody;
@@ -45,6 +47,8 @@ namespace Game.StateMachine.Player
             _playerRigidbody.velocity = Vector2.zero;
 
             _playerAnimator.Play(PlayerCrouchAnimationState);
+
+            _playerAnimator.SetBool(PLAYER_CROUCH_PARAM_BOOL_ID, true);
         }
 
         public override void OnExit()

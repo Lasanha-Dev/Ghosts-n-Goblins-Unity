@@ -13,8 +13,12 @@ namespace Game.StateMachine.Player
 
         private readonly int PLAYER_IDLE_ANIMATION_STATE = Animator.StringToHash("PlayerStandingIdle");
 
+        private readonly int PLAYER_CROUCH_PARAM_BOOL_ID = Animator.StringToHash("IsCrouched");
+
         public override void OnEnter()
         {
+            _playerAnimator.SetBool(PLAYER_CROUCH_PARAM_BOOL_ID, false);
+
             _playerRigidbody.velocity = new Vector2(0, _playerRigidbody.velocity.y);
 
             _playerAnimator.Play(PLAYER_IDLE_ANIMATION_STATE);

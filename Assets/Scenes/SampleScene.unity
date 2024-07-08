@@ -416,7 +416,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1104300356}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -46.9, y: -3.49, z: 0}
+  m_LocalPosition: {x: -47.4, y: -3.630636, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -439,7 +439,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 4
+  m_GravityScale: 3.8
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -767,22 +767,22 @@ MonoBehaviour:
     m_CategoryList:
     - m_Name: Entry
       m_Hash: 0
-      m_Sprite: {fileID: -355831379, guid: 3b298dabaa445da4daeeaf2ade2cd9f0, type: 3}
+      m_Sprite: {fileID: -1572907324, guid: 3b298dabaa445da4daeeaf2ade2cd9f0, type: 3}
     - m_Name: Entry_0
       m_Hash: 0
-      m_Sprite: {fileID: 455207068, guid: 3b298dabaa445da4daeeaf2ade2cd9f0, type: 3}
+      m_Sprite: {fileID: 241869316, guid: 3b298dabaa445da4daeeaf2ade2cd9f0, type: 3}
   - m_Name: PlayerFinalClimb01
     m_Hash: 0
     m_CategoryList:
     - m_Name: Entry
       m_Hash: 0
-      m_Sprite: {fileID: 289266007, guid: 3b298dabaa445da4daeeaf2ade2cd9f0, type: 3}
+      m_Sprite: {fileID: -609176051, guid: 3b298dabaa445da4daeeaf2ade2cd9f0, type: 3}
   - m_Name: PlayerFinalClimb02
     m_Hash: 0
     m_CategoryList:
     - m_Name: Entry
       m_Hash: 0
-      m_Sprite: {fileID: 985087305, guid: 3b298dabaa445da4daeeaf2ade2cd9f0, type: 3}
+      m_Sprite: {fileID: 1982863430, guid: 3b298dabaa445da4daeeaf2ade2cd9f0, type: 3}
   m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: b03f48793672b79459a8708e30716bb4, type: 3}
 --- !u!114 &1687851145
 MonoBehaviour:
