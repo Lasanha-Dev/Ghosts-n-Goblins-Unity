@@ -42,16 +42,18 @@ namespace Game.StateMachine
 
         private void LateUpdate()
         {
-            if (CanTransitToAnyState(out StateBase anyNextState))
+            StateTransition stateTransition = null;
+
+            if (CanTransitToAnyState(out StateBase anyNextState, out stateTransition))
             {
-                SwitchState(anyNextState);
+                SwitchState(anyNextState, stateTransition);
 
                 return;
             }
 
-            if (CanTransitToAnotherState(out StateBase nextState))
+            if (CanTransitToAnotherState(out StateBase nextState, out stateTransition))
             {
-                SwitchState(nextState);
+                SwitchState(nextState, stateTransition);
             }
         }
 
@@ -88,6 +90,8 @@ namespace Game.StateMachine
         private void InitializeState(StateBase state)
         {
             state.SetupState(_stateMachineStatesParameters, _entityComponentsReferences);
+
+            state.SetupTransitionLogics(_entityComponentsReferences);
         }
 
         private void InitializeTransitionConditions(IEnumerable<TransitionConditionBase> transitionConditions)
@@ -105,24 +109,33 @@ namespace Game.StateMachine
             _currentState.OnEnter();
         }
 
-        private void SwitchState(StateBase nextState)
+        private void SwitchState(StateBase nextState, StateTransition stateTransition)
         {
             _currentState.OnExit();
+
+            foreach (TransitionLogic transitionLogic in stateTransition.TransitionLogics)
+            {
+                transitionLogic.ExecuteLogic();
+            }
 
             _currentState = nextState;
 
             _currentState.OnEnter();
         }
 
-        private bool CanTransitToAnotherState(out StateBase state)
+        private bool CanTransitToAnotherState(out StateBase state, out StateTransition stateTransition)
         {
             state = null;
+
+            stateTransition = null;
 
             foreach (StateTransition transition in _currentState.StateTransitions)
             {
                 if (transition.AllConditionsNeedsToMatch == false && AnyTransitionConditionMatched(transition))
                 {
                     state = transition.TransitionState;
+
+                    stateTransition = transition;
 
                     return true;
                 }
@@ -131,6 +144,8 @@ namespace Game.StateMachine
                 {
                     state = transition.TransitionState;
 
+                    stateTransition = transition;
+
                     return true;
                 }
             }
@@ -138,9 +153,11 @@ namespace Game.StateMachine
             return false;
         }
 
-        private bool CanTransitToAnyState(out StateBase state)
+        private bool CanTransitToAnyState(out StateBase state, out StateTransition stateTransition)
         {
             state = null;
+
+            stateTransition = null;
 
             foreach (AnyStateDefinition anyStateDefinition in _stateMachineStates.AnyStatesDefinitions)
             {
@@ -148,12 +165,16 @@ namespace Game.StateMachine
                 {
                     state = anyStateDefinition.StateTransition.TransitionState;
 
+                    stateTransition = anyStateDefinition.StateTransition;
+
                     return true;
                 }
 
                 if (anyStateDefinition.StateTransition.AllConditionsNeedsToMatch && AllTransitionConditionsMatched(anyStateDefinition.StateTransition))
                 {
                     state = anyStateDefinition.StateTransition.TransitionState;
+
+                    stateTransition = anyStateDefinition.StateTransition;
 
                     return true;
                 }

@@ -64,7 +64,7 @@ namespace Game.StateMachine
 
                 AnyStateDefinition stateDefinition = new AnyStateDefinition();
 
-                stateDefinition.StateTransition = new StateTransition(stateBase, stateTransition.TransitionConditions, stateTransition.AllConditionsNeedsToMatch);
+                stateDefinition.StateTransition = new StateTransition(stateBase, stateTransition.TransitionConditions, stateTransition.AllConditionsNeedsToMatch, stateTransition.TransitionLogics);
 
                 AnyStatesDefinitions.AddLast(stateDefinition);
             }
@@ -72,7 +72,7 @@ namespace Game.StateMachine
 
         private StateTransition InstantiateStateTransition(StateTransition stateTransitionSetup)
         {
-            return new StateTransition(GetTransitionStateFromStateTransition(stateTransitionSetup), GetTransitionConditionsFromStateTransition(stateTransitionSetup), stateTransitionSetup.AllConditionsNeedsToMatch);
+            return new StateTransition(GetTransitionStateFromStateTransition(stateTransitionSetup), GetTransitionConditionsFromStateTransition(stateTransitionSetup), stateTransitionSetup.AllConditionsNeedsToMatch, stateTransitionSetup.TransitionLogics);
         }
 
         private IReadOnlyList<StateTransition> InstantiateStateTransitions(IEnumerable<StateTransition> stateTransitionsSetup)
@@ -81,7 +81,7 @@ namespace Game.StateMachine
 
             foreach (StateTransition stateTransition in stateTransitionsSetup)
             {
-                stateTransitions.Add(new StateTransition(GetTransitionStateFromStateTransition(stateTransition), GetTransitionConditionsFromStateTransition(stateTransition), stateTransition.AllConditionsNeedsToMatch));
+                stateTransitions.Add(new StateTransition(GetTransitionStateFromStateTransition(stateTransition), GetTransitionConditionsFromStateTransition(stateTransition), stateTransition.AllConditionsNeedsToMatch, stateTransition.TransitionLogics));
             }
 
             return stateTransitions.ToList();

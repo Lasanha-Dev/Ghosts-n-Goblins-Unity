@@ -14,8 +14,8 @@ TagManager:
   - Player
   - Ground
   - Ladder
-  - 
-  - 
+  - PlayerWeapon
+  - EnemyDamageable
   - 
   - 
   - 

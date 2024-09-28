@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c8c09eba380e794b874bf95debb8222, type: 3}
+  m_Name: Weapons Container
+  m_EditorClassIdentifier: 
+  _weaponsDefinition:
+  - <WeaponType>k__BackingField: 0
+    <WeaponPrefab>k__BackingField: {fileID: 1010547613810044968, guid: 403bd4cd92079154fbf798e086eef62c, type: 3}
+  - <WeaponType>k__BackingField: 1
+    <WeaponPrefab>k__BackingField: {fileID: 6021798167176610962, guid: 357e23d18bb021741bc0496ad82ff126, type: 3}
+  - <WeaponType>k__BackingField: 2
+    <WeaponPrefab>k__BackingField: {fileID: 8401604918623591864, guid: 9736e00030dfa484fb2fd1ffe0aa00f2, type: 3}
+  - <WeaponType>k__BackingField: 3
+    <WeaponPrefab>k__BackingField: {fileID: 1401155416034297292, guid: d8171f68444e65a4283c3e4c407970ec, type: 3}
+  - <WeaponType>k__BackingField: 4
+    <WeaponPrefab>k__BackingField: {fileID: 8404820737851467286, guid: 01451d46ef631894984778c06e79be78, type: 3}

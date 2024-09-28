@@ -17,13 +17,17 @@ namespace Game.StateMachine
 
         [field: SerializeField] public bool AllConditionsNeedsToMatch { get; private set; }
 
-        public StateTransition(StateBase transitionState, List<TransitionConditionBase> transitionConditions, bool allTransitionsNeedsToMatch)
+        [field: SerializeField] public List<TransitionLogic> TransitionLogics { get; private set; }
+
+        public StateTransition(StateBase transitionState, List<TransitionConditionBase> transitionConditions, bool allTransitionsNeedsToMatch, List<TransitionLogic> transitionLogics)
         {
             TransitionState = transitionState;
 
             TransitionConditions = transitionConditions;
 
             AllConditionsNeedsToMatch = allTransitionsNeedsToMatch;
+
+            TransitionLogics = transitionLogics;
         }
 
 #if UNITY_EDITOR

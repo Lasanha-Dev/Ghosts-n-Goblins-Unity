@@ -15,6 +15,7 @@ MonoBehaviour:
   _statesParameters:
   - rid: 5062883173968117762
   - rid: 5204536171128422400
+  - rid: 8273729965879197696
   _stateMachineStates: {fileID: 11400000, guid: ddde45584c709d14aa53a8dd848eb3ca, type: 2}
   references:
     version: 2
@@ -30,3 +31,8 @@ MonoBehaviour:
         name: PlayerCrouchParameters
         <ColliderYOffset>k__BackingField: -0.2770267
         <ColliderYSize>k__BackingField: 1.354674
+    - rid: 8273729965879197696
+      type: {class: PlayerAttackState/PlayerAttackParameters, ns: Game.StateMachine.Player, asm: Assembly-CSharp}
+      data:
+        name: PlayerAttackParameters
+        <WeaponsContainer>k__BackingField: {fileID: 11400000, guid: 0d7bea80a6746b14b8412bc82ab77037, type: 2}
