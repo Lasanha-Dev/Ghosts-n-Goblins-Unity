@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 2834111208304333083}
   - component: {fileID: 8217197158269527027}
   - component: {fileID: 5596340752837401944}
+  - component: {fileID: 2150526399831323553}
   m_Layer: 9
   m_Name: PF_TorchWeapon
   m_TagString: Untagged
@@ -230,3 +231,19 @@ MonoBehaviour:
   _throwVelocity: 750
   _gravityScale: 2
   _delayBeforeFall: 0.03
+--- !u!114 &2150526399831323553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8401604918623591864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1767f430e42ed444da2dd3c7bac1cd93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _objectToDisable: {fileID: 8401604918623591864}
+  _collisionMask:
+    serializedVersion: 2
+    m_Bits: 128

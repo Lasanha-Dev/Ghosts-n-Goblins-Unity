@@ -765,7 +765,7 @@ MonoBehaviour:
   _playerAnimator: {fileID: 1687851143}
   _standingWeaponSpawnTransform: {fileID: 695955396}
   _crouchedWeaponSpawnTransform: {fileID: 296707768}
-  _currentEquippedWeapon: 3
+  _currentEquippedWeapon: 4
 --- !u!1 &1687851140
 GameObject:
   m_ObjectHideFlags: 0
@@ -1060,7 +1060,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8401604918623591864, guid: 9736e00030dfa484fb2fd1ffe0aa00f2, type: 3}
       propertyPath: m_Name
-      value: PF_TorchWeapon
+      value: rchWeaponeapon
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9736e00030dfa484fb2fd1ffe0aa00f2, type: 3}
